@@ -1,43 +1,56 @@
-/**
- * Configure your Gatsby site with this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
- */
+// gatsby-config.js
+require("dotenv").config(); // Laddar in dotenv för att hantera miljövariabler
 
-/**
- * @type {import('gatsby').GatsbyConfig}
- */
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
-    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
+    title: `Oscars Portfolio`, // Titel för webbplatsen
+    description: `Oscars Portfolio`, // Beskrivning av webbplatsen
+    author: `Oscar`, // Författare till webbplatsen
+    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`, // URL för webbplatsen
   },
   plugins: [
-    `gatsby-plugin-image`,
+    `gatsby-plugin-image`, // Gatsby-plugin för att hantera bilder
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-source-filesystem`, // Gatsby-plugin för att läsa in filsystemet
       options: {
-        name: `images`,
-        path: `${__dirname}/src/images`,
+        name: `images`, // Namn för filsystemet
+        path: `${__dirname}/src/images`, // Sökväg till bilderna
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`, // Gatsby-plugin för att transformera och optimera bilder
+    `gatsby-plugin-sharp`, // Gatsby-plugin för skarpa bilder
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: `gatsby-plugin-manifest`, // Gatsby-plugin för att generera webbmanifest
+      options: {//base gatsby starter inställningar, majoriteten gör inget just nu
+        name: `gatsby-starter-default`, // Namn för webbplatsen
+        short_name: `starter`, // Kort namn för webbplatsen
+        start_url: `/`, // Start-URL för webbplatsen
+        background_color: `#663399`, // Bakgrundsfärg för webbplatsen
+        display: `minimal-ui`, // Visningsläge för webbplatsen
+        icon: `src/images/gatsby-icon.png`, // Ikon för webbplatsen
+      },
+    },
+    {
+      resolve: `gatsby-source-contentful`, // Gatsby-plugin för att hämta innehåll från Contentful
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
-        start_url: `/`,
-        background_color: `#663399`,
-        // This will impact how browsers show your PWA/website
-        // https://css-tricks.com/meta-theme-color-and-trickery/
-        // theme_color: `#663399`,
-        display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        spaceId: process.env.CONTENTFUL_SPACE_ID, // Space ID för Contentful
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN, // Access token för att autentisera mot Contentful
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`, // Gatsby-plugin för att generera en sitemap för SEO
+      options: {
+        output: `/sitemap.xml`, // Sökväg för sitemap-filen
+        exclude: ["/404/"], // Undanta vissa sidor från sitemap
+        createLinkInHead: true, // lägger till sitemap-länk i <head> av varje sida
+      },
+    },
+    `gatsby-plugin-react-helmet`, // Gatsby-plugin för att hantera React Helmet och därmed SEO-metadata
+    {
+      resolve: `gatsby-plugin-layout`, // Gatsby-plugin för att hantera layout-komponent
+      options: {
+        component: require.resolve(`./src/components/layout.js`), // Sökväg till layout-komponenten
       },
     },
   ],
-}
+};

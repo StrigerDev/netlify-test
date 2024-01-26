@@ -1,51 +1,57 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.com/docs/how-to/querying-data/use-static-query/
- */
+// src/components/layout.js
+import React from "react";
+import { Link } from "gatsby";
+import "bootstrap/dist/css/bootstrap.min.css"; //Bootstrap
+import { Helmet } from "react-helmet";// seo
 
-import * as React from "react"
-import { useStaticQuery, graphql } from "gatsby"
 
-import Header from "./header"
-import "./layout.css"
-
+// Återanvändbar layoutkomponent för alla sidor
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: `var(--size-content)`,
-          padding: `var(--size-gutter)`,
-        }}
-      >
-        <main>{children}</main>
-        <footer
-          style={{
-            marginTop: `var(--space-5)`,
-            fontSize: `var(--font-sm)`,
-          }}
-        >
-          © {new Date().getFullYear()} &middot; Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
-      </div>
-    </>
-  )
-}
+    <div>
+       <Helmet>{/* seo */}
+        <title>Oscars Portfolio</title>{/* Lägger till en titel uppe på "tabben" */}
+        <meta name="description" content="Oscars Portfolio hemsida" />
+      </Helmet>
 
-export default Layout
+      {/* header med navigationsmeny */}
+      <header>
+        <nav className="bg-dark fixed-top">
+          <div className="container d-flex justify-content-center">
+            <div className="row">
+              <div className="col-md-12">
+                {/* Nav med länkar till olika sidor */}
+                <ul className="nav">
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/">
+                      Home
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/projects">
+                      Projekt
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/om">
+                      Om mig
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/kontakt">
+                      Kontakt
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+      {/* Huvudinnehåll med sidans innehåll */}
+      <main style={{ paddingTop: "20px" }}>{children}</main>{/* renderar sidan */}
+    </div>
+  );
+};
+
+export default Layout;
